@@ -11,3 +11,6 @@ wheels/
 
 # Dotenv
 .env
+
+# Cache
+.cache/
