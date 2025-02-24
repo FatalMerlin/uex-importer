@@ -2,7 +2,7 @@ import json
 import os
 from textwrap import dedent
 
-from models.uex_vehicle import UEX_Vehicle
+from old.uex_vehicle import UEX_Vehicle
 from patchright.sync_api import sync_playwright, Page
 import logging
 
@@ -56,8 +56,6 @@ def main():
 
                 edit_url_with_id = edit_url_template.format(id=vehicle.id)
                 wiki_api_url = wiki_api_url_template.format(name=vehicle.name)
-
-                # https://github.com/FatalMerlin/uex-uuid-updater
 
                 page.goto(edit_url_with_id)
 

@@ -5,8 +5,8 @@ import os
 import requests
 from dotenv import load_dotenv
 
-from models.uex_vehicle import UEX_Vehicle
-from models.wiki_vehicle import Wiki_Vehicle
+from old.uex_vehicle import UEX_Vehicle
+from old.wiki_vehicle import Wiki_Vehicle
 
 file_dir = os.path.dirname(os.path.abspath(__file__))
 cache_dir = os.path.join(file_dir, 'cache')
