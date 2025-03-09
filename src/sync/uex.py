@@ -1,6 +1,5 @@
-from typing import TypeVar
+from typing import TypeVar, Type
 
-from requests import Response
 from typing_extensions import override
 
 from models.base.uex_base_model import UEXBaseModel
@@ -12,22 +11,22 @@ T = TypeVar('T', bound=UEXBaseModel)
 
 class UEXSync(BaseSync):
 
-    def sync(self, modelType: type[T]) -> list[T]:
-        endpoint_url = f"{modelType.BASE_URL}{modelType.ENDPOINT_PATH}"
-        self.log.info("Synchronizing UEX", model=modelType.__name__, source=endpoint_url)
+    def sync(self, modelType: Type[T]) -> list[T]:
+        fetch_url = f"{modelType.BASE_URL}{modelType.ENDPOINT_PATH}"
+        self.log.info("Synchronizing UEX", model=modelType.__name__, source=fetch_url)
 
         if modelType.FOREACH is not None:
             fetch_urls = [
-                endpoint_url + modelType.FOREACH_MAP(model)
+                fetch_url + modelType.FOREACH_MAP(model)
                 for model in self.sync(modelType.FOREACH)
             ]
         else:
-            fetch_urls = [endpoint_url]
+            fetch_urls = [fetch_url]
 
         results: list[T] = []
 
         for url in fetch_urls:
-            result = self.fetch(url)
+            result = self.fetch(url, prefix=modelType.__name__)
 
             if result is None or result['data'] is None:
                 continue

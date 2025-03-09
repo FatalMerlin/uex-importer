@@ -1,3 +1,4 @@
+import os
 from abc import ABC, abstractmethod
 
 import requests
@@ -23,15 +24,23 @@ class BaseSync(ABC):
     def validate_parsed(self, parsed: dict) -> bool:
         return True
 
-    def fetch(self, url: str) -> dict | None:
+    def fetch(self, url: str, *, prefix: str | None = None) -> dict | None:
+        prefix = os.path.join(self.__class__.__name__, *[
+            p for p in [prefix]
+            if p is not None
+        ])
 
         if self.use_cache:
-            cached = read_cache(url)
+            cached = read_cache(url, prefix=prefix)
 
             if cached is not None:
                 return cached
 
-        response = requests.get(url)
+        try:
+            response = requests.get(url)
+        except requests.exceptions.RequestException as e:
+            self.log.error(f"Fetching failed", url=url, error=e)
+            return None
 
         if not self.validate_response(response):
             self.log.error(f"Fetching failed", url=url, status_code=response.status_code)
@@ -44,6 +53,6 @@ class BaseSync(ABC):
             return None
 
         if self.use_cache:
-            write_cache(url, parsed)
+            write_cache(url, parsed, prefix=prefix)
 
         return parsed

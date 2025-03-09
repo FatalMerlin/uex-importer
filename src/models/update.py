@@ -15,7 +15,10 @@ class UpdateStatus(StrEnum):
 class Update(BaseModel, Generic[T]):
     id: int
     name: str
+    source_link: str
     status: UpdateStatus
+    # uex property name -> wiki property name
+    change_source_mapping: dict[str, str] = Field(default_factory=dict)
     changes: T
 
 class UpdateList(BaseModel, Generic[T]):
