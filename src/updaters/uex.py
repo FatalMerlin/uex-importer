@@ -201,6 +201,10 @@ class UEXUpdater:
         ])
         changed_keys = list(changes.keys())
 
+        if len(changed_keys) == 0:
+            self.log.info("No changes found", id=update.id)
+            return True
+
         self.log.info("Updating", resource_type=resource_type.value, id=update.id,
                       changed_keys=changed_keys, changes=changes)
 
