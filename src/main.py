@@ -190,6 +190,10 @@ class Main:
 
                 changed_fields.append(target_property)
 
+            if len(changed_fields) == 0:
+                self.log.warn("Entity skipped, no changes found", name=uex_entry.name)
+                continue
+
             update_list.updates[uex_entry.id] = update
             count_updates_created += 1
 
@@ -260,10 +264,10 @@ if __name__ == '__main__':
     mapping: UpdateMapping = {
         # target_key: source_property
         # target_key = source_property
-        # No UUID update as field is still broken
-        # **dict.fromkeys([
-        #     'uuid',
-        # ]),
+        # Vehicle UUIDs were fixed!
+        **dict.fromkeys([
+            'uuid',
+        ]),
         # individual mappings
         'scu': 'cargo_capacity',
         'crew': ('crew', lambda crew: ','.join(
