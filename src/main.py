@@ -8,7 +8,6 @@ from structlog.stdlib import get_logger
 
 from models.base.uex_base_model import UEXBaseModel
 from models.base.wiki_base_model import WikiBaseModel
-from models.uex.item import UEXItem
 from models.uex.vehicle import UEXVehicle
 from models.update import Update, UpdateStatus, UpdateList
 from models.wiki.vehicle import WikiVehicle
@@ -17,23 +16,6 @@ from sync.wiki import WikiSync
 from updaters.uex import UEXUpdater
 from utils.cache import write_cache, read_cache
 from utils.validation import validate_value_path, get_attr_by_path
-
-
-# def remove_exc_info(_, __, event_dict):
-#     event_dict.pop("exc_info", None)  # Remove exc_info if present
-#     return event_dict
-#
-#
-# processors = [remove_exc_info]
-#
-# for processor in structlog.get_config()["processors"]:
-#     if hasattr(processor, "__name__") and processor.__name__ == "set_exc_info":
-#         continue
-#     processors.append(processor)
-#
-# structlog.configure(
-#     processors=processors,
-# )
 
 structlog.configure(
     processors=[
